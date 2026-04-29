@@ -104,3 +104,32 @@ Line-by-line explanation:
 - `RUN pip install --no-cache-dir -r requirements.txt` installs the required Python packages without keeping pip cache files.
 - `COPY btc_watcher ./btc_watcher` copies the project source code into the container.
 - `CMD ["python", "-m", "btc_watcher.main"]` starts the application when the container runs.
+
+### Commands Used
+
+Build the image:
+
+```bash
+docker build -t btc-discord-watcher:latest .
+```
+
+Run the full application:
+
+```bash
+docker run --rm \
+  --name btc-discord-watcher \
+  -e DISCORD_TOKEN=your-token \
+  -e DISCORD_COMMAND_PREFIX=! \
+  -e DEFAULT_PERCENT_THRESHOLD=1.0 \
+  -e DEFAULT_COOLDOWN_SECONDS=60 \
+  btc-discord-watcher:latest
+```
+
+Tag and push the image:
+
+```bash
+docker tag btc-discord-watcher:latest domvil/btc-discord-watcher:latest
+docker push domvil/btc-discord-watcher:latest
+```
+
+
