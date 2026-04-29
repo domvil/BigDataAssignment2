@@ -14,6 +14,11 @@ btc_watcher/
   models.py
   service.py
   settings_store.py
+data/
+  settings.json
+images/
+  example.png
+  logs.png
 requirements.txt
 README.md
 ```
@@ -63,6 +68,20 @@ Use `.env.example` as a template and set the variables in your shell or Docker c
 6. In `Guild Install` scopes, select `bot` and `applications.commands`.
 7. Give the bot at least these permissions: `View Channels`, `Send Messages`, `Read Message History`.
 8. Use the generated install link to add the bot to your Discord server.
+
+## Screenshots
+
+### Discord Bot Commands And Alerts
+
+Example interaction showing the help output, watcher startup, status checks, and threshold alerts.
+
+![Discord bot commands and alerts](images/example.png)
+
+### Runtime Logs
+
+Sample console output showing the Binance ticker stream and alert activity.
+
+![BTC watcher runtime logs](images/logs.png)
 
 ## Docker Process Report
 

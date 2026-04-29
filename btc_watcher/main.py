@@ -4,6 +4,8 @@ import argparse
 import asyncio
 import logging
 
+from discord.errors import LoginFailure
+
 from .config import AppConfig
 
 
@@ -55,6 +57,14 @@ def main() -> int:
         return asyncio.run(async_main(args.check))
     except KeyboardInterrupt:
         return 0
+    except LoginFailure:
+        logging.getLogger(__name__).error(
+            "Discord login failed: DISCORD_TOKEN is invalid or expired."
+        )
+        return 1
+    except (RuntimeError, ValueError) as exc:
+        logging.getLogger(__name__).error("%s", exc)
+        return 1
     except Exception:
         logging.getLogger(__name__).exception("Application exited with an error.")
         return 1

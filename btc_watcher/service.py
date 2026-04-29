@@ -37,10 +37,19 @@ class PriceWatcherService:
     async def start(self) -> bool:
         async with self._state_lock:
             if self.is_running:
+                LOGGER.info("Price watcher start requested, but the watcher is already running.")
                 return False
 
             # Start percent tracking from the most recent known price.
             self._engine.reset(self._last_snapshot.price if self._last_snapshot else None)
+            LOGGER.info(
+                "Starting price watcher with percent=%s upper=%s lower=%s cooldown=%ss channel=%s",
+                self._settings.percent_threshold,
+                self._settings.upper_price,
+                self._settings.lower_price,
+                self._settings.cooldown_seconds,
+                self._settings.notification_channel_id,
+            )
             self._task = asyncio.create_task(self._run_stream(), name="binance-price-watcher")
             self._task.add_done_callback(self._on_stream_done)
             return True
@@ -51,8 +60,10 @@ class PriceWatcherService:
             self._task = None
 
         if task is None:
+            LOGGER.info("Price watcher stop requested, but the watcher is already stopped.")
             return False
 
+        LOGGER.info("Stopping price watcher.")
         task.cancel()
         try:
             await task
@@ -110,6 +121,7 @@ class PriceWatcherService:
                 channel_id = settings.notification_channel_id
 
             for event in events:
+                LOGGER.info("Alert triggered: %s", event.message)
                 try:
                     await self._send_notification(event.message, channel_id)
                 except Exception as exc:
