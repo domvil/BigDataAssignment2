@@ -69,6 +69,30 @@ Use `.env.example` as a template and set the variables in your shell or Docker c
 7. Give the bot at least these permissions: `View Channels`, `Send Messages`, `Read Message History`.
 8. Use the generated install link to add the bot to your Discord server.
 
+## Launching The Program
+
+### Run With Docker
+
+Pull the published image from Docker Hub:
+
+```bash
+docker pull domvil/btc-discord-watcher:latest
+```
+
+Start the container with the required token:
+
+```bash
+docker run --rm \
+  --name btc-discord-watcher \
+  -e DISCORD_TOKEN=your-discord-bot-token \
+  -e DISCORD_COMMAND_PREFIX=! \
+  -e DEFAULT_PERCENT_THRESHOLD=1.0 \
+  -e DEFAULT_COOLDOWN_SECONDS=60 \
+  domvil/btc-discord-watcher:latest
+```
+
+You can add the other variables from `.env.example` to the `docker run` command if you want to override the defaults.
+
 ## Screenshots
 
 ### Discord Bot Commands And Alerts
